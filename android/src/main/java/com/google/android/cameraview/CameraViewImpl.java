@@ -20,6 +20,7 @@ import android.media.CamcorderProfile;
 import android.view.View;
 import android.graphics.SurfaceTexture;
 import android.util.Range;
+import com.madhavanmalolan.ffmpegandroidlibrary.Controller;
 
 import com.facebook.react.bridge.ReadableMap;
 
@@ -124,6 +125,8 @@ abstract class CameraViewImpl {
     abstract public void setPreviewTexture(SurfaceTexture surfaceTexture);
 
     abstract public Size getPreviewSize();
+
+    abstract public void onSlowMotionConvert(Controller FFContext, String initialPath, String outputPath, boolean recordAudio);
 
     interface Callback {
 

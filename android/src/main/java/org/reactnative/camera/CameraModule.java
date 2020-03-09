@@ -324,6 +324,29 @@ public class CameraModule extends ReactContextBaseJavaModule {
       });
   }
 
+//    @ReactMethod
+//    public void onSlowMotionConvert(final ReadableMap options, final int viewTag, final Promise promise) {
+//        final ReactApplicationContext context = getReactApplicationContext();
+//        final File cacheDirectory = mScopedContext.getCacheDirectory();
+//        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
+//
+//        uiManager.addUIBlock(new UIBlock() {
+//            @Override
+//            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+//                final RNCameraView cameraView;
+//
+//                try {
+//                    cameraView = (RNCameraView) nativeViewHierarchyManager.resolveView(viewTag);
+//                    if (cameraView.isCameraOpened()) {
+//                        cameraView.stopRecording();
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
+
   // @ReactMethod
   // public void getMinAndMaxExposureCompensation(final int viewTag, final Promise promise) {
   //   final ReactApplicationContext context = getReactApplicationContext();

@@ -39,6 +39,7 @@ import android.widget.FrameLayout;
 import android.graphics.SurfaceTexture;
 
 import com.facebook.react.bridge.ReadableMap;
+import com.madhavanmalolan.ffmpegandroidlibrary.Controller;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -281,7 +282,7 @@ public class CameraView extends FrameLayout {
 
     /**
      * Open a camera device and start showing camera preview. This is typically
-     * called from {@link Activity#onResume()}.
+     * called from {@link Activity #onResume()}.
      */
     public void start() {
         if (!mImpl.start()) {
@@ -299,7 +300,7 @@ public class CameraView extends FrameLayout {
 
     /**
      * Stop camera preview and close the device. This is typically called from
-     * {@link Activity#onPause()}.
+     * {@link Activity #onPause()}.
      */
     public void stop() {
         mImpl.stop();
@@ -427,9 +428,9 @@ public class CameraView extends FrameLayout {
      * @param size The {@link Size} to be set.
      */
     public void setPictureSize(@NonNull Size size) {
-//        mImpl.setPictureSize(size);
+        mImpl.setPictureSize(size);
         if (mImpl.checkIfHasCamera2() == true) {
-             mImpl.setPictureSize(Size.parse("16x9"));
+            // mImpl.setPictureSize(Size.parse("16x9"));
             // vou setar um size estatico porque isso n ta funcionando direito usando a
             // regra que defini
         }
@@ -601,6 +602,10 @@ public class CameraView extends FrameLayout {
 
     public Size getPreviewSize() {
         return mImpl.getPreviewSize();
+    }
+
+    public void onSlowMotionConvert(Controller FFContext, String initialPath, String outputPath, boolean recordAudio) {
+        mImpl.onSlowMotionConvert(FFContext, initialPath, outputPath, recordAudio);
     }
 
     private class CallbackBridge implements CameraViewImpl.Callback {

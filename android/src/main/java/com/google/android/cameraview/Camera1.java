@@ -28,6 +28,7 @@ import android.util.Range;
 import android.widget.Toast;
 import android.content.Context;
 import android.util.Log;
+import com.madhavanmalolan.ffmpegandroidlibrary.Controller;
 
 import com.facebook.react.bridge.ReadableMap;
 
@@ -262,23 +263,49 @@ class Camera1 extends CameraViewImpl
     }
 
     @Override
-    void setPictureSize(Size size) {
-        if (size == null) {
-            if (mAspectRatio == null) {
-                return;
-            }
-            SortedSet<Size> sizes = mPictureSizes.sizes(mAspectRatio);
-            if (sizes != null && !sizes.isEmpty()) {
-                mPictureSize = sizes.last();
-            }
-        } else {
-            mPictureSize = size;
-        }
-        if (mCameraParameters != null && mCamera != null) {
-            mCameraParameters.setPictureSize(mPictureSize.getWidth(), mPictureSize.getHeight());
-            mCamera.setParameters(mCameraParameters);
-        }
-    }
+//        void setPictureSize(Size size) {
+//        if (size == null) {
+//            if (mAspectRatio == null) {
+//                return;
+//            }
+//          SortedSet<Size> sizes = mPictureSizes.sizes(mAspectRatio);
+//          if(sizes != null && !sizes.isEmpty())
+//          {
+//            mPictureSize = sizes.last();
+//          }
+//        } else {
+//          mPictureSize = size;
+//        }
+//        synchronized(this){
+//            if (mCameraParameters != null && mCamera != null) {
+//                mCameraParameters.setPictureSize(mPictureSize.getWidth(), mPictureSize.getHeight());
+//                try{
+//                    mCamera.setParameters(mCameraParameters);
+//                }
+//                catch(RuntimeException e ) {
+//                    Log.e("CAMERA_1::", "setParameters failed", e);
+//                }
+//
+//            }
+//        }
+//    }
+     void setPictureSize(Size size) {
+         if (size == null) {
+             if (mAspectRatio == null) {
+                 return;
+             }
+             SortedSet<Size> sizes = mPictureSizes.sizes(mAspectRatio);
+             if (sizes != null && !sizes.isEmpty()) {
+                 mPictureSize = sizes.last();
+             }
+         } else {
+             mPictureSize = size;
+         }
+         if (mCameraParameters != null && mCamera != null) {
+             mCameraParameters.setPictureSize(mPictureSize.getWidth(), mPictureSize.getHeight());
+             mCamera.setParameters(mCameraParameters);
+         }
+     }
 
     @Override
     Size getPictureSize() {
@@ -988,5 +1015,13 @@ class Camera1 extends CameraViewImpl
     @Override
     public void onError(MediaRecorder mr, int what, int extra) {
         stopRecording();
+    }
+
+    public void onSlowMotionConvert(Controller FFContext, String initialPath, String outputPath, boolean recordAudio) {
+
+        String hasAudio = recordAudio == true ? "" : "-an";
+
+        FFContext.getInstance().run(new String[]{"-y", "-i", initialPath, "-vf", "setpts=6*PTS", "-r 120", "-crf 18", "copy", hasAudio, outputPath});
+
     }
 }

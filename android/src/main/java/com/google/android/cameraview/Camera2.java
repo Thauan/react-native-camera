@@ -42,6 +42,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Range;
 import android.widget.Toast;
+import com.madhavanmalolan.ffmpegandroidlibrary.Controller;
 
 import com.facebook.react.bridge.ReadableMap;
 
@@ -196,6 +197,8 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
     private String mCameraId;
 
     private CameraCharacteristics mCameraCharacteristics;
+
+    Controller onSlowMotionConvert;
 
     CameraDevice mCamera;
 
@@ -933,6 +936,18 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
         return new Size(mPreview.getWidth(), mPreview.getHeight());
     }
 
+    @Override
+    public void onSlowMotionConvert(Controller FFContext, String initialPath, String outputPath, boolean recordAudio) {
+        String hasAudio = recordAudio == true ? "" : "-an";
+        FFContext.getInstance().run(new String[]{"-y", "-i", initialPath, "-vf", "setpts=6*PTS", "-r 120", "-crf 18", "copy", hasAudio, outputPath});
+    }
+
+//    @Override
+//    public void onSlowMotionConvert(Controller FFContext, String initialPath, String outputPath, boolean recordAudio) {
+//        String hasAudio = recordAudio == true ? "" : "-an";
+//        FFContext.getInstance().run(new String[]{"-y", "-i", initialPath, "-vf", "setpts=6*PTS", "-r 120", "-crf 18", "copy", hasAudio, outputPath});
+//    }
+
     /**
      * Chooses the optimal preview size based on {@link #mPreviewSizes} and the
      * surface size.
@@ -1359,6 +1374,12 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
             }
             }
         }
+
+//        public void onSlowMotionConvert(Controller FFContext, String initialPath, String outputPath, boolean recordAudio) {
+//            String hasAudio = recordAudio == true ? "" : "-an";
+//
+//            FFContext.getInstance().run(new String[]{"-y", "-i", initialPath, "-vf", "setpts=6*PTS", "-r 120", "-crf 18", "copy", hasAudio, outputPath});
+//        }
 
         /**
          * Called when it is ready to take a still picture.
